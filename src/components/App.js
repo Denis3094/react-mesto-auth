@@ -4,7 +4,6 @@ import Header from "./Header";
 import Main from "./Main";
 import Footer from "./Footer";
 import PopupWithForm from "./PopupWithForm";
-import api from "../utils/api";
 import ImagePopup from "./ImagePopup";
 
 
@@ -14,27 +13,7 @@ function App() {
     const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = React.useState(false);
     const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = React.useState(false);
     const [isImagePopupOpen, setIsImagePopupOpen] = React.useState(false);
-
-    const [userName, setUserName] = React.useState('');
-    const [userDescription, setUserDescription] = React.useState('');
-    const [userAvatar, setUserAvatar] = React.useState('');
-
-    const [cards, setCards] = React.useState([]);
     const [selectedCard, setSelectedCard] = React.useState({});
-
-    React.useEffect(() => {
-        Promise.all([api.getProfile(), api.getInitialCards()])
-            .then(([info, cards]) => {
-                setUserName(info.name)
-                setUserDescription(info.about)
-                setUserAvatar(info.avatar)
-                setCards(cards)
-            })
-            .catch(err => {
-                console.log(err)
-            });
-    })
-
 
     const handleEditProfileClick = () => {
         setIsEditProfilePopupOpen(true);
@@ -49,7 +28,14 @@ function App() {
         setSelectedCard(card)
         setIsImagePopupOpen(true)
     }
-
+    const closeAllPopups = (evt) => {
+        if (evt.target.classList.contains('popup_opened') || evt.target.classList.contains('popup__close-img')) {
+            setIsEditProfilePopupOpen(false)
+            setIsAddPlacePopupOpen(false)
+            setIsEditAvatarPopupOpen(false)
+            setIsImagePopupOpen(false)
+        }
+    }
 
     return (
         <div className="page">
@@ -61,12 +47,7 @@ function App() {
                     onAddPlace={handleAddPlaceClick}
                     onEditAvatar={handleEditAvatarClick}
                     onCardClick={handleCardClick}
-                    userName={userName}
-                    userDescription={userDescription}
-                    userAvatar={userAvatar}
-                    cards={cards}
                 />
-
                 <Footer/>
 
                 <PopupWithForm
@@ -74,9 +55,8 @@ function App() {
                     name='edit-profile'
                     buttonText='Сохранить'
                     isOpen={isEditProfilePopupOpen}
-                    onClose={() => {
-                        setIsEditProfilePopupOpen(false)
-                    }}>
+                    onClose={closeAllPopups}
+                >
                     <input id="username" type="text" className="popup__input popup__input_type_name"
                            placeholder="Имя" name="name" required minLength={2} maxLength={40}/>
                     <span id="error-username" className="popup__error"/>
@@ -90,9 +70,8 @@ function App() {
                     name='edit-avatar'
                     buttonText='Сохранить'
                     isOpen={isEditAvatarPopupOpen}
-                    onClose={() => {
-                        setIsEditAvatarPopupOpen(false)
-                    }}>
+                    onClose={closeAllPopups}
+                >
                     <input id="linkAvatar" type="url" className="popup__input popup__input_type_link"
                            placeholder="Ссылка на картинку" name="linkAvatar" required/>
                     <span id="error-linkAvatar" className="popup__error"/>
@@ -103,9 +82,8 @@ function App() {
                     name='add-card'
                     buttonText='Создать'
                     isOpen={isAddPlacePopupOpen}
-                    onClose={() => {
-                        setIsAddPlacePopupOpen(false)
-                    }}>
+                    onClose={closeAllPopups}
+                >
                     <input id="title" type="text" className="popup__input popup__input_type_title"
                            placeholder="Название" name="name" required minLength={2} maxLength={30}/>
                     <span id="error-title" className="popup__error"/>
@@ -123,14 +101,10 @@ function App() {
                 <ImagePopup
                     card={selectedCard}
                     isOpen={isImagePopupOpen}
-                    onClose={() => {
-                        setIsImagePopupOpen(false)
-                    }}
+                    onClose={closeAllPopups}
                 >
                 </ImagePopup>
-
             </div>
-            <template className="cards-template"/>
         </div>
     );
 }
