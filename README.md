@@ -18,4 +18,5 @@
 
 #### Ссылка на Github pages:
 
-* https://denis3094.github.io/mesto-react/
+* [Ссылка на проект](https://denis3094.github.io/mesto-react/index.html)
+
