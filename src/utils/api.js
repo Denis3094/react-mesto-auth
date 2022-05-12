@@ -25,7 +25,8 @@ class Api {
             .then(this._checkResponse)
     }
 
-    editProfile(name, about) {
+
+    editProfile({name, about}) {
         return fetch(`${this._baseUrl}/users/me`, {
             method: "PATCH",
             headers: this._headers,
@@ -78,8 +79,16 @@ class Api {
             method: "PATCH",
             headers: this._headers,
             body: JSON.stringify({
-                avatar: data.linkAvatar
+                avatar: data.avatar
             })
+        })
+            .then(this._checkResponse)
+    }
+
+    changeLikeCardStatus(id, isLiked) {
+        return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+            method: isLiked ? "PUT" : "DELETE",
+            headers: this._headers,
         })
             .then(this._checkResponse)
     }

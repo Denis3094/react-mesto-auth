@@ -1,15 +1,14 @@
-import React from "react";
 import closeBtn from "../images/close.svg";
 
-function ImagePopup(props) {
+function ImagePopup({card, isOpen, onClose}) {
     return (
-        <section className={"popup popup_pic" + (props.isOpen && ' popup_opened')}>
-            <div className="popup__pic-container">
+        <section className={"popup popup_pic" + (isOpen && ' popup_opened')} onMouseDown={onClose}>
+            <div className="popup__pic-container" onMouseDown={(evt) => evt.stopPropagation()}>
                 <button className="button popup__close popup__close_pic" type="button" aria-label="закрыть">
-                    <img onClick={props.onClose} className="popup__close-img" src={closeBtn} alt="закрыть попап"/>
+                    <img onClick={onClose} className="popup__close-img" src={closeBtn} alt="закрыть попап"/>
                 </button>
-                <img className="popup__photo" src={props.card.link} alt={props.card.name}/>
-                <p className="popup__photo-title"/>
+                <img className="popup__photo" src={card.link} alt={card.name}/>
+                <p className="popup__photo-title">{card.name}</p>
             </div>
         </section>
     )
