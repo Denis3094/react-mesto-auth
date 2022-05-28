@@ -11,7 +11,7 @@ const useCloseEscape = (isOpen, closeAllPopups) => {
     if (isOpen) document.addEventListener("keydown", handleEscClick);
 
     return () => document.removeEventListener("keydown", handleEscClick);
-  },[isOpen]);
+  },[isOpen, closeAllPopups]);
 };
 
 export default useCloseEscape;

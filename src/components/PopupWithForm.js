@@ -1,5 +1,5 @@
 import closeBtn from "../images/close.svg";
-import useCloseEscape from "../utils/useCloseEscape";
+import useCloseEscape from "../hooks/useCloseEscape";
 
 function PopupWithForm({
   name,

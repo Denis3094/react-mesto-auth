@@ -1,5 +1,5 @@
 import PopupWithForm from "./PopupWithForm";
-import {useRef, useState} from "react";
+import {useRef} from "react";
 
 function EditAvatarPopup({
   isOpen,
@@ -10,12 +10,12 @@ function EditAvatarPopup({
 }) {
 
   const avatarRef = useRef();
-  const [avatarLink, setAvatarLink] = useState('');
+  // const [avatarLink, setAvatarLink] = useState('');
 
 
-  function handleChangeAvatar(evt) {
-    setAvatarLink(evt.target.value);
-  }
+  // function handleChangeAvatar(evt) {
+  //   setAvatarLink(evt.target.value);
+  // }
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -23,7 +23,7 @@ function EditAvatarPopup({
       avatar: avatarRef.current.value},
     () => {
       avatarRef.current.value = '';
-      setAvatarLink('')
+      // setAvatarLink('')
     });
   }
 
@@ -39,7 +39,7 @@ function EditAvatarPopup({
     >
       <input
         ref={avatarRef}
-        onChange={handleChangeAvatar}
+        // onChange={handleChangeAvatar}
         id="linkAvatar"
         type="url"
         className="popup__input popup__input_type_link"
