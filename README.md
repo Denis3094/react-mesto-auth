@@ -6,6 +6,8 @@
 * Webpack
 * React
 * Hooks
+* React router DOM
+* Аутентификация на React
 
 
 **Описание:**
@@ -18,5 +20,5 @@
 
 #### Ссылка на Github pages:
 
-* [Ссылка на проект](https://denis3094.github.io/mesto-react/index.html)
+* [Ссылка на проект](https://denis3094.github.io/react-mesto-auth/)
 
