@@ -39,17 +39,18 @@ function App() {
 
   const history = useHistory();
 
-
   useEffect(() => {
-    Promise.all([api.getProfile(), api.getInitialCards()])
-      .then(([info, cards]) => {
-        setCurrentUser(info);
-        setCards(cards);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
+    if (loggedIn) {
+      Promise.all([api.getProfile(), api.getInitialCards()])
+        .then(([info, cards]) => {
+          setCurrentUser(info);
+          setCards(cards);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
+  }, [loggedIn]);
 
   useEffect(() => {
     checkToken();
@@ -60,7 +61,6 @@ function App() {
       history.push("/");
     }
   }, [loggedIn, history]);
-
 
   function closeAllPopups() {
     setIsEditProfilePopupOpen(false);
@@ -219,12 +219,13 @@ function App() {
   function checkToken() {
     if (localStorage.getItem("jwt")) {
       let token = localStorage.getItem("jwt");
-      auth.getContent(token)
+      auth
+        .getContent(token)
         .then((res) => {
           const { _id, email } = res.data;
-          console.log('res.data', res.data)
-          setLoggedIn(true);
+          console.log("res.data", res.data);
           setUserData({ _id, email });
+          setLoggedIn(true);
         })
         .catch((err) => console.log(err.message));
     }
@@ -232,11 +233,10 @@ function App() {
 
   function handleLogout() {
     localStorage.removeItem("jwt");
-    setLoggedIn(false);
     setUserData({ _id: "", email: "" });
+    setLoggedIn(false);
     history.push("/sign-in");
   }
-
 
   return (
     <CurrentUserContext.Provider value={currentUser}>

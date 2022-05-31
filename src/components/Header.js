@@ -1,9 +1,10 @@
-import { Link, Route } from "react-router-dom";
+import {Link, Route, Switch} from "react-router-dom";
 
 function Header({userEmail, handleLogout}) {
   return (
-      <header className="header">
 
+<Switch>
+    <header className="header">
         <Route>
           <Link to="/">
             <div className="header__logo" />
@@ -30,8 +31,9 @@ function Header({userEmail, handleLogout}) {
             </Link>
           </div>
         </Route>
+    </header>
+</Switch>
 
-      </header>
   );
 }
 
