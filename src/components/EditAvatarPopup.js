@@ -1,5 +1,5 @@
 import PopupWithForm from "./PopupWithForm";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import useCloseEscape from "../hooks/useCloseEscape";
 
 function EditAvatarPopup({
@@ -10,7 +10,6 @@ function EditAvatarPopup({
   closeAllPopups,
 }) {
   const [avatarLink, setAvatarLink] = useState("");
-
 
   function handleSubmit(e) {
     e.preventDefault();
