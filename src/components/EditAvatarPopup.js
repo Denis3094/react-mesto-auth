@@ -11,6 +11,7 @@ function EditAvatarPopup({
 }) {
   const [avatarLink, setAvatarLink] = useState("");
 
+
   function handleSubmit(e) {
     e.preventDefault();
     onUpdateAvatar({ avatar: avatarLink }, () => setAvatarLink(""));
