@@ -1,5 +1,6 @@
 import PopupWithForm from "./PopupWithForm";
-import {useRef} from "react";
+import { useState, useEffect } from "react";
+import useCloseEscape from "../hooks/useCloseEscape";
 
 function EditAvatarPopup({
   isOpen,
@@ -8,24 +9,18 @@ function EditAvatarPopup({
   isLoading,
   closeAllPopups,
 }) {
-
-  const avatarRef = useRef();
-  // const [avatarLink, setAvatarLink] = useState('');
-
-
-  // function handleChangeAvatar(evt) {
-  //   setAvatarLink(evt.target.value);
-  // }
+  const [avatarLink, setAvatarLink] = useState("");
 
   function handleSubmit(e) {
     e.preventDefault();
-    onUpdateAvatar({
-      avatar: avatarRef.current.value},
-    () => {
-      avatarRef.current.value = '';
-      // setAvatarLink('')
-    });
+    onUpdateAvatar({ avatar: avatarLink }, () => setAvatarLink(""));
   }
+
+  function handleChangeAvatar(evt) {
+    setAvatarLink(evt.target.value);
+  }
+
+  useCloseEscape(isOpen, closeAllPopups);
 
   return (
     <PopupWithForm
@@ -38,8 +33,8 @@ function EditAvatarPopup({
       closeAllPopups={closeAllPopups}
     >
       <input
-        ref={avatarRef}
-        // onChange={handleChangeAvatar}
+        onChange={handleChangeAvatar}
+        value={avatarLink || ""}
         id="linkAvatar"
         type="url"
         className="popup__input popup__input_type_link"
@@ -52,4 +47,4 @@ function EditAvatarPopup({
   );
 }
 
-export default EditAvatarPopup
+export default EditAvatarPopup;

@@ -154,14 +154,14 @@ function App() {
     setIsEditAvatarPopupOpen(true);
   }
 
-  function handleUpdateAvatar(ava, resetForm) {
+  function handleUpdateAvatar(avatar, resetValue) {
     setIsLoading(true);
     api
-      .editAvatar(ava)
+      .editAvatar(avatar)
       .then((res) => {
         setCurrentUser(res);
         closeAllPopups();
-        resetForm();
+        resetValue();
       })
       .catch((err) => console.log(err))
       .finally(() => {
