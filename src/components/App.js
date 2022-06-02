@@ -31,6 +31,10 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
 
+  const [errorMessage, setErrorMessage] = useState({});
+  const [email, setEmail] = useState('');
+
+
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({ _id: "", email: "" });
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
@@ -237,6 +241,9 @@ function App() {
     setLoggedIn(false);
     history.push("/sign-in");
   }
+
+
+
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
