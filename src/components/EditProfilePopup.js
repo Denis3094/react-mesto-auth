@@ -1,6 +1,7 @@
 import { useContext, useEffect, useState } from "react";
 import PopupWithForm from "./PopupWithForm";
 import CurrentUserContext from "../contexts/CurrentUserContext";
+import ValidationMessage from "./ValidationMessage";
 
 function EditProfilePopup({
   isOpen,
@@ -8,8 +9,9 @@ function EditProfilePopup({
   onUpdateUser,
   isLoading,
   closeAllPopups,
+  isValid,
+  errorMessage,
 }) {
-
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   // Подписка на контекст
@@ -18,9 +20,11 @@ function EditProfilePopup({
   // его данные будут использованы в управляемых компонентах.
 
   useEffect(() => {
+    // setName(currentUser.name);
+    // setDescription(currentUser.about);
     setName(currentUser.name);
     setDescription(currentUser.about);
-  }, [currentUser, isOpen]);
+  }, [isOpen, currentUser]);
 
   function handleChangeName(evt) {
     setName(evt.target.value);
@@ -49,33 +53,35 @@ function EditProfilePopup({
       onClose={onClose}
       onSubmit={handleSubmit}
       closeAllPopups={closeAllPopups}
+      isValid={isValid}
     >
       <input
         defaultValue={name}
         onChange={handleChangeName}
         id="username"
         type="text"
-        className="popup__input popup__input_type_name"
+        minLength="2"
+        maxLength="50"
+        // className={`popup__input popup__input_type_name popup__input_type_error`}
+        className={`popup__input popup__input_type_name`}
         placeholder="Имя"
         name="name"
         required
-        minLength={2}
-        maxLength={40}
       />
-      <span id="error-username" className="popup__error" />
+      <ValidationMessage errorMessage={errorMessage} name="name"></ValidationMessage>
       <input
         defaultValue={description}
         onChange={handleChangeDescription}
         id="about"
         type="text"
-        className="popup__input popup__input_type_job"
+        minLength="2"
+        maxLength="50"
+        className={`popup__input popup__input_type_job`}
         placeholder="О себе"
         name="aboutMe"
         required
-        minLength={2}
-        maxLength={200}
       />
-      <span id="error-about" className="popup__error" />
+      <ValidationMessage errorMessage={errorMessage} name="aboutMe"></ValidationMessage>
     </PopupWithForm>
   );
 }

@@ -1,5 +1,7 @@
 import closeBtn from "../images/close.svg";
 import useCloseEscape from "../hooks/useCloseEscape";
+import { useRef } from "react";
+import useCheckButton from "../hooks/useCheckButton";
 
 function PopupWithForm({
   name,
@@ -10,13 +12,16 @@ function PopupWithForm({
   onClose,
   children,
   closeAllPopups,
+  isValid,
 }) {
+  const formRef = useRef();
 
-  useCloseEscape(isOpen, closeAllPopups)
+  const submitButton = useCheckButton(formRef.current, isValid);
+  useCloseEscape(isOpen, closeAllPopups);
 
   return (
     <section
-      className={`popup popup_${name} ${isOpen && " popup_opened"}`}
+      className={`popup popup_${name} ${isOpen && "popup_opened"}`}
       onMouseDown={onClose}
     >
       <div
@@ -37,17 +42,22 @@ function PopupWithForm({
         </button>
         <h2 className="popup__title">{title}</h2>
         <form
+          ref={formRef}
           onSubmit={onSubmit}
           className="popup__form"
           name={name}
           method="post"
           noValidate
+          onChange={isValid}
         >
           {children}
           <button
-            className="popup__button popup__button_edit"
+            className={`popup__button ${
+              submitButton ? "" : "popup__button_disabled"
+            }`}
             type="submit"
             aria-label="сохранить"
+            disabled={!submitButton}
           >
             {buttonText}
           </button>

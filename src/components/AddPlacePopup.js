@@ -1,5 +1,6 @@
 import PopupWithForm from "./PopupWithForm";
-import {useState, useEffect} from "react";
+import { useState, useEffect } from "react";
+import ValidationMessage from "./ValidationMessage";
 
 function AddPlacePopup({
   isOpen,
@@ -7,15 +8,16 @@ function AddPlacePopup({
   onAddPlace,
   isLoading,
   closeAllPopups,
+  isValid,
+  errorMessage,
 }) {
-
   const [addPlaceName, setAddPlaceName] = useState("");
   const [addPlaceLink, setAddPlaceLink] = useState("");
 
   useEffect(() => {
     setAddPlaceName("");
     setAddPlaceLink("");
-  }, [onClose]);
+  }, [isOpen]);
 
   function handleChangeAddPlaceName(evt) {
     setAddPlaceName(evt.target.value);
@@ -45,6 +47,7 @@ function AddPlacePopup({
       onClose={onClose}
       onSubmit={handleSubmit}
       closeAllPopups={closeAllPopups}
+      isValid={isValid}
     >
       <input
         value={addPlaceName}
@@ -58,7 +61,10 @@ function AddPlacePopup({
         minLength={2}
         maxLength={30}
       />
-      <span id="error-title" className="popup__error" />
+      <ValidationMessage
+        errorMessage={errorMessage}
+        name="name"
+      ></ValidationMessage>
       <input
         value={addPlaceLink}
         onChange={handleChangeAddPlaceLink}
@@ -69,7 +75,10 @@ function AddPlacePopup({
         name="link"
         required
       />
-      <span id="error-link" className="popup__error" />
+      <ValidationMessage
+        errorMessage={errorMessage}
+        name="link"
+      ></ValidationMessage>
     </PopupWithForm>
   );
 }

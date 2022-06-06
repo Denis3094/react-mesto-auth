@@ -31,15 +31,13 @@ function App() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [errorMessage, setErrorMessage] = useState({});
-  const [email, setEmail] = useState('');
-
-
   const [loggedIn, setLoggedIn] = useState(false);
   const [userData, setUserData] = useState({ _id: "", email: "" });
   const [isInfoTooltipOpen, setIsInfoTooltipOpen] = useState(false);
   const [isSignup, setIsSignup] = useState(false);
   const [signupError, setSignupError] = useState("");
+
+  const [errorMessage, setErrorMessage] = useState({});
 
   const history = useHistory();
 
@@ -242,8 +240,14 @@ function App() {
     history.push("/sign-in");
   }
 
+  // Валидация форм
 
-
+  function checkInputInvalid(evt) {
+    if(!evt.currentTarget.checkValidity()) {
+      setErrorMessage({...errorMessage, [evt.target.name]: evt.target.validationMessage});
+    }
+    else setErrorMessage({});
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -292,6 +296,8 @@ function App() {
             onUpdateUser={handleUpdateUser}
             isLoading={isLoading}
             closeAllPopups={closeAllPopups}
+            errorMessage={errorMessage}
+            isValid={checkInputInvalid}
           />
 
           <EditAvatarPopup
@@ -300,6 +306,8 @@ function App() {
             onUpdateAvatar={handleUpdateAvatar}
             isLoading={isLoading}
             closeAllPopups={closeAllPopups}
+            errorMessage={errorMessage}
+            isValid={checkInputInvalid}
           />
 
           <AddPlacePopup
@@ -309,6 +317,8 @@ function App() {
             onAddPlace={handleAddPlaceSubmit}
             isLoading={isLoading}
             closeAllPopups={closeAllPopups}
+            errorMessage={errorMessage}
+            isValid={checkInputInvalid}
           />
 
           <DeleteConfirmPopup

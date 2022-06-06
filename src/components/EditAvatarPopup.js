@@ -1,6 +1,7 @@
 import PopupWithForm from "./PopupWithForm";
 import { useState, useEffect } from "react";
 import useCloseEscape from "../hooks/useCloseEscape";
+import ValidationMessage from "./ValidationMessage";
 
 function EditAvatarPopup({
   isOpen,
@@ -8,23 +9,25 @@ function EditAvatarPopup({
   onUpdateAvatar,
   isLoading,
   closeAllPopups,
+  errorMessage,
+  isValid,
 }) {
   const [avatarLink, setAvatarLink] = useState("");
 
+  useCloseEscape(isOpen, closeAllPopups);
+
   useEffect(() => {
     setAvatarLink("");
-  }, [onClose]);
-
-  function handleSubmit(e) {
-    e.preventDefault();
-    onUpdateAvatar({ avatar: avatarLink }, () => setAvatarLink(""));
-  }
+  }, [isOpen]);
 
   function handleChangeAvatar(evt) {
     setAvatarLink(evt.target.value);
   }
 
-  useCloseEscape(isOpen, closeAllPopups);
+  function handleSubmit(e) {
+    e.preventDefault();
+    onUpdateAvatar({ avatar: avatarLink }, () => setAvatarLink(""));
+  }
 
   return (
     <PopupWithForm
@@ -35,18 +38,20 @@ function EditAvatarPopup({
       onClose={onClose}
       onSubmit={handleSubmit}
       closeAllPopups={closeAllPopups}
+      isValid={isValid}
     >
       <input
         onChange={handleChangeAvatar}
         value={avatarLink || ""}
         id="linkAvatar"
         type="url"
-        className="popup__input popup__input_type_link"
+        className={`popup__input popup__input_type_link`}
+        // className={`popup__input popup__input_type_link popup__input_type_error`}
         placeholder="Ссылка на картинку"
-        name="linkAvatar"
+        name="avatarLink"
         required
       />
-      <span id="error-linkAvatar" className="popup__error" />
+      <ValidationMessage errorMessage={errorMessage} name="avatarLink" />
     </PopupWithForm>
   );
 }
