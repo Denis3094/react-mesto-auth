@@ -282,6 +282,8 @@ function App() {
               <Login
                 onLogin={handleLogin}
                 submitBtn={isLoading ? "Выполняется вход..." : "Войти"}
+                errorMessage={errorMessage}
+                isValid={checkInputInvalid}
               />
             </Route>
             <Route>

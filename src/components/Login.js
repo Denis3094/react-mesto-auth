@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
+import useCheckButton from "../hooks/useCheckButton";
+import ValidationMessage from "./ValidationMessage";
 
-function Login({ onLogin, submitBtn }) {
-
+function Login({ onLogin, submitBtn, isValid, errorMessage }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const formRef = useRef();
+  const submitButton = useCheckButton(formRef.current, isValid);
 
   function handleEmail(evt) {
     setEmail(evt.target.value);
@@ -16,13 +18,18 @@ function Login({ onLogin, submitBtn }) {
 
   function handleSubmit(event) {
     event.preventDefault();
-    onLogin(password, email );
+    onLogin(password, email);
   }
 
   return (
     <section className="auth">
       <h2 className="auth__title">Вход</h2>
-      <form className="auth__form" onSubmit={handleSubmit}>
+      <form
+        ref={formRef}
+        onChange={isValid}
+        className="auth__form"
+        onSubmit={handleSubmit}
+      >
         <label className="auth__field">
           <input
             className="auth__input auth__input_type_email"
@@ -31,9 +38,14 @@ function Login({ onLogin, submitBtn }) {
             name="email"
             onChange={handleEmail}
             value={email}
+            minLength="5"
+            maxLength="50"
             required
           />
-          <span className="auth__input-error"></span>
+          <ValidationMessage
+            errorMessage={errorMessage}
+            name="email"
+          ></ValidationMessage>
         </label>
         <label className="auth__field">
           <input
@@ -43,11 +55,22 @@ function Login({ onLogin, submitBtn }) {
             name="password"
             onChange={handlePassword}
             value={password}
+            minLength="5"
+            maxLength="20"
             required
           />
-          <span className="auth__input-error"></span>
+          <ValidationMessage
+            errorMessage={errorMessage}
+            name="password"
+          ></ValidationMessage>
         </label>
-        <button className="auth__submit-button" type="submit">
+        <button
+          type="submit"
+          className={`auth__submit-button ${
+            submitButton ? "" : "auth__submit-button_disabled"
+          }`}
+          disabled={!submitButton}
+        >
           {submitBtn}
         </button>
       </form>
