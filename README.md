@@ -20,5 +20,5 @@
 
 #### Ссылка на Github pages:
 
-* [Ссылка на проект](https://denis3094.github.io/react-mesto-auth/index.html)
+* [Ссылка на проект](https://denis3094.github.io/react-mesto-auth/)
 
